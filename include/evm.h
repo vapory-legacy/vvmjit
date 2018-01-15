@@ -334,9 +334,10 @@ typedef void (*evm_get_balance_fn)(struct evm_uint256be* result,
 ///                          @see ::evm_context.
 /// @param      address      The address of the contract.
 /// @return                  The size of the code.
-typedef size_t (*evm_get_code_fn)(const uint8_t** result_code,
-                                  struct evm_context* context,
-                                  const struct evm_address* address);
+typedef size_t (*evm_get_code_size_fn)(struct evm_context* context,
+                                       const struct evm_address* address);
+
+typedef size_t (*evm_copy_code_fn)(struct evm_context* context, const struct evm_address* address, uint8_t* buffer_data, size_t buffer_size);
 
 /// Selfdestruct callback function.
 ///
@@ -394,7 +395,8 @@ struct evm_context_fn_table {
     evm_get_storage_fn get_storage;
     evm_set_storage_fn set_storage;
     evm_get_balance_fn get_balance;
-    evm_get_code_fn get_code;
+    evm_get_code_size_fn get_code_size;
+    evm_copy_code_fn copy_code;
     evm_selfdestruct_fn selfdestruct;
     evm_call_fn call;
     evm_get_tx_context_fn get_tx_context;

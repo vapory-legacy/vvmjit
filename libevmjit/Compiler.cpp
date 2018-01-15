@@ -776,7 +776,10 @@ void Compiler::compileBasicBlock(BasicBlock& _basicBlock, RuntimeManager& _runti
 			auto srcIdx = stack.pop();
 			auto reqBytes = stack.pop();
 
-			auto codeRef = _ext.extcode(addr);
+			// First fill with zeros.
+			_memory.copyBytes(llvm::ConstantPointerNull::get(Type::BytePtr), m_builder.getInt64(0), srcIdx, destMemIdx, reqBytes);
+
+			auto size = _ext.extcode(addr, );
 
 			_memory.copyBytes(codeRef.ptr, codeRef.size, srcIdx, destMemIdx, reqBytes);
 			break;
