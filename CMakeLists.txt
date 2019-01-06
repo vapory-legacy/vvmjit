@@ -3,9 +3,9 @@ cmake_minimum_required(VERSION 3.0.0)
 cmake_policy(SET CMP0042 OLD) 	# fix MACOSX_RPATH
 cmake_policy(SET CMP0048 NEW) 	# allow VERSION argument in project()
 
-project(EVMJIT VERSION 0.9.0.2 LANGUAGES CXX)
+project(VVMJIT VERSION 0.9.0.2 LANGUAGES CXX)
 
-message(STATUS "EVM JIT ${EVMJIT_VERSION_MAJOR}.${EVMJIT_VERSION_MINOR}.${EVMJIT_VERSION_PATCH}")
+message(STATUS "VVM JIT ${VVMJIT_VERSION_MAJOR}.${VVMJIT_VERSION_MINOR}.${VVMJIT_VERSION_PATCH}")
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 set(CMAKE_AUTOMOC OFF)
@@ -23,7 +23,7 @@ endif()
 
 # LLVM
 if (DEFINED MSVC)
-	set(LLVM_DIR "${ETH_CMAKE_DIR}/extdep/install/windows/x64/share/llvm/cmake")
+	set(LLVM_DIR "${VAP_CMAKE_DIR}/extdep/install/windows/x64/share/llvm/cmake")
 elseif (DEFINED APPLE)
 	set(LLVM_DIR "/usr/local/opt/llvm37/lib/llvm-3.7/share/llvm/cmake")
 endif()
@@ -35,4 +35,4 @@ endif()
 message(STATUS "Using LLVM ${LLVM_VERSION} (${LLVM_DIR})")
 llvm_map_components_to_libnames(LLVM_LIBS core support mcjit x86asmparser x86codegen ipo)
 
-add_subdirectory(libevmjit)
+add_subdirectory(libvvmjit)
