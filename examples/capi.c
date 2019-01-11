@@ -2,118 +2,118 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "evm.h"
+#include "vvm.h"
 
 
-struct evm_uint256be balance(struct evm_context* context,
-                             const struct evm_address* address)
+struct vvm_uint256be balance(struct vvm_context* context,
+                             const struct vvm_address* address)
 {
-    struct evm_uint256be ret = {.bytes = {1, 2, 3, 4}};
+    struct vvm_uint256be ret = {.bytes = {1, 2, 3, 4}};
     return ret;
 }
 
-struct evm_address address(struct evm_context* context)
+struct vvm_address address(struct vvm_context* context)
 {
-    struct evm_address ret = {.bytes = {1, 2, 3, 4}};
+    struct vvm_address ret = {.bytes = {1, 2, 3, 4}};
     return ret;
 }
 
-static void print_address(const struct evm_address* address)
+static void print_address(const struct vvm_address* address)
 {
     int i = 0;
     for (i = 0; i < sizeof(address->bytes); ++i)
         printf("%x", address->bytes[i] & 0xff);
 }
 
-static int account_exists(struct evm_context* context,
-                           const struct evm_address* address) {
-    printf("EVM-C: EXISTS @");
+static int account_exists(struct vvm_context* context,
+                           const struct vvm_address* address) {
+    printf("VVM-C: EXISTS @");
     print_address(address);
     printf("\n");
     return 0;
 }
 
-static void get_storage(struct evm_uint256be* result,
-                        struct evm_context* context,
-                        const struct evm_address* address,
-                        const struct evm_uint256be* key)
+static void get_storage(struct vvm_uint256be* result,
+                        struct vvm_context* context,
+                        const struct vvm_address* address,
+                        const struct vvm_uint256be* key)
 {
-    printf("EVM-C: SLOAD @");
+    printf("VVM-C: SLOAD @");
     print_address(address);
     printf("\n");
 }
 
-static void set_storage(struct evm_context* context,
-                        const struct evm_address* address,
-                        const struct evm_uint256be* key,
-                        const struct evm_uint256be* value)
+static void set_storage(struct vvm_context* context,
+                        const struct vvm_address* address,
+                        const struct vvm_uint256be* key,
+                        const struct vvm_uint256be* value)
 {
-    printf("EVM-C: SSTORE @");
+    printf("VVM-C: SSTORE @");
     print_address(address);
     printf("\n");
 }
 
-static void get_balance(struct evm_uint256be* result,
-                        struct evm_context* context,
-                        const struct evm_address* address)
+static void get_balance(struct vvm_uint256be* result,
+                        struct vvm_context* context,
+                        const struct vvm_address* address)
 {
-    printf("EVM-C: BALANCE @");
+    printf("VVM-C: BALANCE @");
     print_address(address);
     printf("\n");
     *result = balance(context, address);
 }
 
 static size_t get_code(const uint8_t** code,
-                       struct evm_context* context,
-                       const struct evm_address* address)
+                       struct vvm_context* context,
+                       const struct vvm_address* address)
 {
-    printf("EVM-C: CODE @");
+    printf("VVM-C: CODE @");
     print_address(address);
     printf("\n");
     return 0;
 }
 
-static void selfdestruct(struct evm_context* context,
-                         const struct evm_address* address,
-                         const struct evm_address* beneficiary)
+static void selfdestruct(struct vvm_context* context,
+                         const struct vvm_address* address,
+                         const struct vvm_address* beneficiary)
 {
-    printf("EVM-C: SELFDESTRUCT ");
+    printf("VVM-C: SELFDESTRUCT ");
     print_address(address);
     printf(" -> ");
     print_address(beneficiary);
     printf("\n");
 }
 
-static void call(struct evm_result* result,
-                 struct evm_context* context,
-                 const struct evm_message* msg)
+static void call(struct vvm_result* result,
+                 struct vvm_context* context,
+                 const struct vvm_message* msg)
 {
-    printf("EVM-C: CALL (depth: %d)\n", msg->depth);
-    result->status_code = EVM_FAILURE;
+    printf("VVM-C: CALL (depth: %d)\n", msg->depth);
+    result->status_code = VVM_FAILURE;
 }
 
-static void get_tx_context(struct evm_tx_context* result, struct evm_context* context)
+static void get_tx_context(struct vvm_tx_context* result, struct vvm_context* context)
 {
 
 }
 
-static void get_block_hash(struct evm_uint256be* result, struct evm_context* context,
+static void get_block_hash(struct vvm_uint256be* result, struct vvm_context* context,
                            int64_t number)
 {
 
 }
 
-/// EVM log callback.
+/// VVM log callback.
 ///
-/// @note The `evm_log` name is used to avoid conflict with `log()` C function.
-static void evm_log(struct evm_context* context, const struct evm_address* address,
+/// @note The `vvm_log` name is used to avoid conflict with `log()` C function.
+static void vvm_log(struct vvm_context* context, const struct vvm_address* address,
                     const uint8_t* data, size_t data_size,
-                    const struct evm_uint256be topics[], size_t topics_count)
+                    const struct vvm_uint256be topics[], size_t topics_count)
 {
-    printf("EVM-C: LOG%d\n", (int)topics_count);
+    printf("VVM-C: LOG%d\n", (int)topics_count);
 }
 
-static const struct evm_context_fn_table ctx_fn_table = {
+static const struct vvm_context_fn_table ctx_fn_table = {
     account_exists,
     get_storage,
     set_storage,
@@ -123,34 +123,34 @@ static const struct evm_context_fn_table ctx_fn_table = {
     call,
     get_tx_context,
     get_block_hash,
-    evm_log
+    vvm_log
 };
 
 /// Example how the API is supposed to be used.
 int main(int argc, char *argv[]) {
-    struct evm_instance* jit = examplevm_create();
-    if (jit->abi_version != EVM_ABI_VERSION)
+    struct vvm_instance* jit = examplvvm_create();
+    if (jit->abi_version != VVM_ABI_VERSION)
         return 1;  // Incompatible ABI version.
 
-    uint8_t const code[] = "Place some EVM bytecode here";
+    uint8_t const code[] = "Place some VVM bytecode here";
     const size_t code_size = sizeof(code);
-    struct evm_uint256be code_hash = {.bytes = {1, 2, 3,}};
+    struct vvm_uint256be code_hash = {.bytes = {1, 2, 3,}};
     uint8_t const input[] = "Hello World!";
-    struct evm_uint256be value = {{1, 0,}};
-    struct evm_address addr = {{0, 1, 2,}};
+    struct vvm_uint256be value = {{1, 0,}};
+    struct vvm_address addr = {{0, 1, 2,}};
     int64_t gas = 200000;
 
-    struct evm_context ctx = {&ctx_fn_table};
+    struct vvm_context ctx = {&ctx_fn_table};
 
-    struct evm_message msg = {addr, addr, value, input, sizeof(input),
+    struct vvm_message msg = {addr, addr, value, input, sizeof(input),
                               code_hash, gas, 0};
 
-    struct evm_result result =
-        jit->execute(jit, &ctx, EVM_HOMESTEAD, &msg, code, code_size);
+    struct vvm_result result =
+        jit->execute(jit, &ctx, VVM_HOMESTEAD, &msg, code, code_size);
 
     printf("Execution result:\n");
-    if (result.status_code != EVM_SUCCESS) {
-      printf("  EVM execution failure: %d\n", result.status_code);
+    if (result.status_code != VVM_SUCCESS) {
+      printf("  VVM execution failure: %d\n", result.status_code);
     } else {
         printf("  Gas used: %" PRId64 "\n", gas - result.gas_left);
         printf("  Gas left: %" PRId64 "\n", result.gas_left);

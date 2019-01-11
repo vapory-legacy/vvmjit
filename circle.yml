@@ -24,8 +24,8 @@ defaults:
       command: >
         cmake ../project
         -DCMAKE_BUILD_TYPE=$BUILD_TYPE
-        -DEVMJIT_TESTS=ON
-        -DEVMJIT_EXAMPLES=ON
+        -DVVMJIT_TESTS=ON
+        -DVVMJIT_EXAMPLES=ON
         $CMAKE_OPTIONS
 
   build: &build
@@ -74,7 +74,7 @@ jobs:
       - BUILD_PARALLEL_JOBS: 2
       - TEST_PARALLEL_JOBS: 1
     docker:
-      - image: ethereum/cpp-build-env
+      - image: vapory/cpp-build-env
     steps: *default-steps
 
   Linux-GCC6-Debug:
@@ -86,7 +86,7 @@ jobs:
       - BUILD_PARALLEL_JOBS: 4
       - TEST_PARALLEL_JOBS: 1
     docker:
-      - image: ethereum/cpp-build-env
+      - image: vapory/cpp-build-env
     steps: *default-steps
 
   macOS-XCode9:
@@ -100,7 +100,7 @@ jobs:
 
 workflows:
   version: 2
-  cpp-ethereum:
+  cpp-vapory:
     jobs:
       - macOS-XCode9
       - Linux-Clang5

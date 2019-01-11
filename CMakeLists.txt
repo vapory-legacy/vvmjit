@@ -8,18 +8,18 @@ endif()
 
 set(CMAKE_CONFIGURATION_TYPES Debug Release RelWithDebInfo)
 
-project(EVMJIT VERSION 0.9.0.2 LANGUAGES CXX C)
+project(VVMJIT VERSION 0.9.0.2 LANGUAGES CXX C)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
-message(STATUS "EVM JIT ${EVMJIT_VERSION_MAJOR}.${EVMJIT_VERSION_MINOR}.${EVMJIT_VERSION_PATCH}")
+message(STATUS "VVM JIT ${VVMJIT_VERSION_MAJOR}.${VVMJIT_VERSION_MINOR}.${VVMJIT_VERSION_PATCH}")
 
 if (NOT ${CMAKE_SYSTEM_PROCESSOR} MATCHES "x86_64|AMD64")
-	message(FATAL_ERROR "Target ${CMAKE_SYSTEM_PROCESSOR} not supported -- EVM JIT works only on x86_64 architecture")
+	message(FATAL_ERROR "Target ${CMAKE_SYSTEM_PROCESSOR} not supported -- VVM JIT works only on x86_64 architecture")
 endif()
 
-option(EVMJIT_EXAMPLES "Generate build targets for the EVMJIT examples" OFF)
-option(EVMJIT_TESTS "Create targets for CTest" OFF)
+option(VVMJIT_EXAMPLES "Generate build targets for the VVMJIT examples" OFF)
+option(VVMJIT_TESTS "Create targets for CTest" OFF)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
@@ -44,13 +44,13 @@ endif()
 include(ProjectLLVM)
 configure_llvm_project()
 
-add_subdirectory(libevmjit)
+add_subdirectory(libvvmjit)
 
-if (EVMJIT_EXAMPLES)
+if (VVMJIT_EXAMPLES)
 	add_subdirectory(examples)
 endif()
 
-if (EVMJIT_TESTS)
+if (VVMJIT_TESTS)
 	enable_testing()
 	add_subdirectory(tests)
 endif()

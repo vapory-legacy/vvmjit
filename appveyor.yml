@@ -12,6 +12,6 @@ before_build: |
   cd build
   cmake -G "Visual Studio 14 2015 Win64" ..
 build:
-  project: c:/projects/evmjit/build/evmjit.sln
+  project: c:/projects/vvmjit/build/vvmjit.sln
   parallel: true
   verbosity: minimal
